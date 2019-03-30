@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- my css -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- icons -->
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+    <!-- Firebase App is always required and must be first -->
+    <script src="js/app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
+
+    <!-- Add additional services that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-functions.js"></script>
+
+    <!-- Egor scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <!-- <script src="js/poly_tracer.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+
+    <title>Walking live</title>
+
+  </head>
+  <body>
+    <script>
+        window.onload = function() {
+            initMap();
+        };
+    </script>
+
+    <!-- navbar -->
+    <!-- <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-item nav-link" href="#">Features</a>
+              <a class="nav-item nav-link" href="#">Pricing</a>
+              <a class="nav-item nav-link disabled" href="#">Disabled</a>
+            </div>
+          </div>
+    </nav> -->
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" style="">
+        <a class="navbar-brand" href="#">
+            <img src="img/logo2.png" width="45" height="45" alt="" style="margin:0px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="app.html">App<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="reglog.html">Sign in/up</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" style="background-color: #effcff;">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit" style="background-color: #01939A;">Search</button>
+          </form>
+        </div>
+      </nav>
+
+
+      <!-- content -->
+            <div id='test1'></div>
+            <div id="map"></div>
+            <div class="cover-heading text-center" style="font-weight: bold;">Маршрут</div>
+            <div class="container classway" id='way' style='margin-top: 3vh;height:64px; border: 2px solid #eee; border-radius: 5px; padding: 3px; background-color: #eee;'></div>
+
+                    <div class="container menuname"></div>
+                    <div class="container" style="margin-top: 5vh; margin-bottom:5vh; border: 2px solid black; border-radius: 5px; padding: 3px;">
+
+                            <div class="row">
+                              
+                              <div class="col">
+                                    <i class='fas fa-pencil-alt' style='font-size:36px'></i>
+                                    <button id='button3'class="btn btn-primary fas" onClick='startDrawing();' style="background-color: #01939A;"> Выбрать область</button>
+                              </div>
+                              
+                              <div class="col">
+                                <div class="form-group">
+                                        
+                                    <!-- <label for="formControlRange">Example Range input</label> -->
+                                    <i class='fas fa-hourglass-half' style='font-size:16px'> Временной диапазон</i>
+                                    <input type="range" class="form-control-range" id="formControlRange">
+                                </div>
+                              </div>
+                              
+                              <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                    <i class='fas fa-hamburger' style='font-size:36px'> Еда </i>
+                                    <!-- <label class="form-check-label" for="defaultCheck1">
+                                        Еда
+                                    </label> -->
+                                </div>                              
+                            </div>
+                            </div>
+                            
+                            
+                            <div class="row">
+                              
+                              <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                    <i class='fas fa-university' style='font-size:36px'> Общ. места </i>
+                                    <!-- <label class="form-check-label" for="defaultCheck1">
+                                    Общ. места
+                                    </label> -->
+                                </div>
+                              </div>
+                              
+                              <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                    <i class='fas fa-place-of-worship' style='font-size:36px'>История</i>
+                                    <!-- <label class="form-check-label" for="defaultCheck1">
+                                        Достопримечательности
+                                    </label> -->
+                                </div>
+                              </div>
+                              
+                              <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                    <i class='fas fa-restroom' style='font-size:36px'> WC </i>
+                                    <!-- <label class="form-check-label" for="defaultCheck1">
+                                    WC
+                                    </label> -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+            <!-- List places variants -->
+            <div class="container list-places">
+                    <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Варианты маршрута
+                            <span class="caret"></span></button>
+                            <ul id="list-places" class="dropdown-menu">
+                              
+                            </ul>
+                            <button id='next' class="btn btn-primary fas" style="background-color: #01939A;" onclick='next();'> ЕЩЁ ВАРИАНТ</button>
+                    </div>
+            </div>
+            
+                  
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>-->
+    <script src="js/app.js"></script> 
+    <script src="js/GetPlaces.js" charset="utf-8"></script>
+    <script src="js/poly_tracer.js"></script>
+  </body>
+</html>

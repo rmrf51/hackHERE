@@ -1,0 +1,77 @@
+nav{
+    background-color: #006064;
+}
+
+li:hover{
+    background-color: #01939A;
+}
+
+.reglog {
+    margin: 20vh;
+}
+
+body{
+    background-color: #effcff;
+}
+
+#test1 {
+    font-family: 'Consolas', Courier, monospace;
+    font-size: small;
+}
+
+#map {
+    height: 80vh; 
+    width: 95vw;
+    
+    margin: auto;
+    margin-top: 12vh;
+    /* padding-top: 64px; */
+    }
+.content-index{
+    margin-top: 12vh;
+}
+
+/* CSS */
+.list-counter-square {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .list-counter-square>li {
+    position: relative;
+    display: block;
+    margin-bottom: .25rem;
+    padding: .325rem .825rem .325rem 1.325rem;
+    color: #fff;
+    background: #006664;
+  }
+  .list-counter-square>li:last-child {
+    margin-bottom: 0;
+  }
+  .list-counter-square>li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.5rem;
+    background: #5dc8cd;
+  }  
+
+  .imghome {
+      width: 30vw;
+      height: auto;
+  }
+
+  /* .contentcen{
+      margin: auto;
+      align"center"
+  } */
+
+  .list-places{
+    margin-top: 3vh;
+  }
+
+  .classway{
+      font-size: 20px;
+  }
